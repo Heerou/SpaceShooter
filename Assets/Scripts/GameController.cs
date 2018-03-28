@@ -8,7 +8,7 @@ public class GameController : MonoBehaviour {
 
     public GameObject Asteroids;
     public Vector2 SpawnValues;
-    public int AsteroidsCount;
+    public int PooledAsteroids;
     public float SpawnWait;
     public float StartWait;
     public float WaveWait;
@@ -19,9 +19,10 @@ public class GameController : MonoBehaviour {
     bool restart;
     bool gameOver;
     int score;
+    List<GameObject> asteroids;
 
     // Use this for initialization
-    void Start () {
+    void Start() {
         restart = false;
         gameOver = false;
         RestartText.text = "";
@@ -29,11 +30,20 @@ public class GameController : MonoBehaviour {
         score = 0;
         UpdateScore();
         StartCoroutine(SpawnAsteroids());
+
+        asteroids = new List<GameObject>();
+        GameObject obj;
+        for (int i = 0; i < PooledAsteroids; i++) {
+            obj = (GameObject)Instantiate(Asteroids);
+            obj.name = "AstroideCool " + i;
+            obj.SetActive(false);
+            asteroids.Add(obj);
+        }
     }
 
     private void Update() {
-        if(restart) {
-            if(Input.GetKeyDown(KeyCode.R)) {
+        if (restart) {
+            if (Input.GetKeyDown(KeyCode.R)) {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             }
             if (Input.GetKeyDown(KeyCode.Q)) {
@@ -43,18 +53,22 @@ public class GameController : MonoBehaviour {
         }
     }
 
-    IEnumerator SpawnAsteroids () {
+    IEnumerator SpawnAsteroids() {
         yield return new WaitForSeconds(StartWait);
-        while(true) {
-            for (int i = 0; i < AsteroidsCount; i++) {
+        while (true) {
+            for (int i = 0; i < asteroids.Count; i++) {
                 Vector3 spawnPosition = new Vector3(Random.Range(-SpawnValues.x, SpawnValues.x), SpawnValues.y);
                 Quaternion spawnRotation = Quaternion.identity;
-                Instantiate(Asteroids, spawnPosition, spawnRotation);
+                if (!asteroids[i].activeInHierarchy) {
+                    asteroids[i].transform.position = spawnPosition;
+                    asteroids[i].transform.rotation = spawnRotation;
+                    asteroids[i].SetActive(true);
+                }
                 yield return new WaitForSeconds(SpawnWait);
             }
             yield return new WaitForSeconds(WaveWait);
 
-            if(gameOver) {
+            if (gameOver) {
                 RestartText.text = "Press R to restart";
                 restart = true;
                 break;

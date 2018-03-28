@@ -21,8 +21,7 @@ public class DestroyByContact : MonoBehaviour {
     private void OnTriggerEnter(Collider other) {
         if (other.tag == "Bullet") {
             Instantiate(Explosion, other.transform.position, other.transform.rotation);
-            Destroy(other.gameObject);
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
         if(other.tag == "Player") {
             Instantiate(Explosion, other.transform.position, other.transform.rotation);

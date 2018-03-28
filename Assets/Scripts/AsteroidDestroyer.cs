@@ -4,15 +4,16 @@ using UnityEngine;
 
 public class AsteroidDestroyer : MonoBehaviour {
 
-    public float LifeTime;
-
-	// Use this for initialization
-	void Start () {
-        AwesomeAsteroidDestroyer();
+    private void OnEnable() {
+        Invoke("AwesomeAsteroidDestroyer", 2f);
     }
-	
-	
+
+
     void AwesomeAsteroidDestroyer() {
-        Destroy(gameObject, LifeTime);
+        gameObject.SetActive(false);
+    }
+
+    void OnDisable() {
+        CancelInvoke();
     }
 }

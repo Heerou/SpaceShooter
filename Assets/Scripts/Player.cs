@@ -9,16 +9,27 @@ public class Player : MonoBehaviour {
     float moveVertical;
     Rigidbody playerRB;
     public Boundary boundary;
-    public GameObject Shot;
+    public GameObject Bullet;
     public Transform ShotSpawn;
     float fireRate = 0.5f;
     float nextFire = 0.5f;
     AudioSource weaponAudio;
 
+    public int PooledBullets = 5;
+    List<GameObject> bullets;
+
     // Use this for initialization
     void Start () {
         playerRB = GetComponent<Rigidbody>();
         weaponAudio = GetComponent<AudioSource>();
+
+        bullets = new List<GameObject>();
+        GameObject obj;
+        for (int i = 0; i < PooledBullets; i++) {
+            obj = (GameObject)Instantiate(Bullet);
+            obj.SetActive(false);
+            bullets.Add(obj);
+        }
 
     }
 	
@@ -54,10 +65,17 @@ public class Player : MonoBehaviour {
 
     //Disparo
     void Shooting () {
-        if (Input.GetButton("Fire1") && Time.time > nextFire) {
-            nextFire = Time.time + fireRate;
-            Instantiate(Shot, ShotSpawn.position, ShotSpawn.rotation);
-            weaponAudio.Play();
-        }       
+        for(int i = 0; i < bullets.Count; i++) {
+            if (!bullets[i].activeInHierarchy) {
+                if (Input.GetButton("Fire1") && Time.time > nextFire) {
+                    nextFire = Time.time + fireRate;
+                    bullets[i].transform.position = ShotSpawn.position;
+                    bullets[i].transform.rotation = ShotSpawn.rotation;
+                    bullets[i].SetActive(true);
+                    weaponAudio.Play();
+                    break;
+                }
+            }
+        }   
     }
 }
