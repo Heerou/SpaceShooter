@@ -283,6 +283,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\AsteroidDestroyer.cs" />
+    <Compile Include="Assets\Scripts\BossMovement.cs" />
     <Compile Include="Assets\Scripts\Boundary.cs" />
     <Compile Include="Assets\Scripts\BulletMover.cs" />
     <Compile Include="Assets\Scripts\DestroyByContact.cs" />
