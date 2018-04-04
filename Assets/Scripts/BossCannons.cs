@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class BossCannons : MonoBehaviour {
 
-    public int HealthPoints;
     public GameObject Bullet;
     public Transform ShotSpawn;
     float fireRate = 0.5f;

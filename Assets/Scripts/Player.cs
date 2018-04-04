@@ -17,9 +17,10 @@ public class Player : MonoBehaviour {
 
     public int PooledBullets = 5;
     List<GameObject> bullets;
+    int currentBullet;
 
     // Use this for initialization
-    void Start () {
+    void Start() {
         playerRB = GetComponent<Rigidbody>();
         weaponAudio = GetComponent<AudioSource>();
 
@@ -32,9 +33,9 @@ public class Player : MonoBehaviour {
         }
 
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update() {
         Movement();
         RestictionZone();
         ShipRot();
@@ -42,7 +43,7 @@ public class Player : MonoBehaviour {
     }
 
     //Movimiento del personaje
-    void Movement () {        
+    void Movement() {
         moveHorizontal = Input.GetAxis("Horizontal");
         moveVertical = Input.GetAxis("Vertical");
         Vector2 movement = new Vector2(moveHorizontal, moveVertical);
@@ -50,7 +51,7 @@ public class Player : MonoBehaviour {
     }
 
     //para que el jugador no se salga de la camara
-    void RestictionZone () {
+    void RestictionZone() {
         playerRB.position = new Vector2(
             Mathf.Clamp(playerRB.position.x, boundary.xMin, boundary.xMax),
             Mathf.Clamp(playerRB.position.y, boundary.yMin, boundary.yMax)
@@ -58,24 +59,23 @@ public class Player : MonoBehaviour {
     }
 
     //Rotacion de la nave en el eje y
-    void ShipRot () {
+    void ShipRot() {
         float titl = 4;
         playerRB.rotation = Quaternion.Euler(-90, playerRB.velocity.x * -titl, 0);
     }
 
     //Disparo
-    void Shooting () {
-        for(int i = 0; i < bullets.Count; i++) {
-            if (!bullets[i].activeInHierarchy) {
-                if (Input.GetButton("Fire1") && Time.time > nextFire) {
-                    nextFire = Time.time + fireRate;
-                    bullets[i].transform.position = ShotSpawn.position;
-                    bullets[i].transform.rotation = ShotSpawn.rotation;
-                    bullets[i].SetActive(true);
-                    weaponAudio.Play();
-                    break;
-                }
-            }
-        }   
+    void Shooting() {
+        if (Input.GetButton("Fire1") && Time.time > nextFire) {
+            nextFire = Time.time + fireRate;
+            bullets[currentBullet].transform.position = ShotSpawn.position;
+            bullets[currentBullet].transform.rotation = ShotSpawn.rotation;
+            bullets[currentBullet].SetActive(true);
+            weaponAudio.Play();
+        }
+        currentBullet++;
+        if(currentBullet >= bullets.Count) {
+            currentBullet = 0;
+        }
     }
 }

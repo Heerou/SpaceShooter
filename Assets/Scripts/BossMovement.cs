@@ -6,7 +6,6 @@ public class BossMovement : MonoBehaviour {
 
     public Boundary boundary;
     public float Speed;
-    public float HealthPoint;
     Rigidbody bossRB;
 
     // Use this for initialization

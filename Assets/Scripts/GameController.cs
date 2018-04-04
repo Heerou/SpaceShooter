@@ -12,7 +12,7 @@ public class GameController : MonoBehaviour {
     public float SpawnWait;
     public float StartWait;
     public float WaveWait;
-    int waveCount = 1;
+    int waveCount = 0;
     public int WaveQuantity;
     public Text ScoreText;
     public Text RestartText;
@@ -46,7 +46,7 @@ public class GameController : MonoBehaviour {
             obj.SetActive(false);
             asteroids.Add(obj);
         }
-        WaveText.text = "Wave # " + waveCount;
+        WaveText.text = "Wave # " + (waveCount + 1);
     }
 
     private void Update() {
@@ -65,25 +65,23 @@ public class GameController : MonoBehaviour {
         WaveText.enabled = false;
         yield return new WaitForSeconds(StartWait);
         while (WaveIsActive) {
-            WaveText.text = "Wave # " + waveCount;
+            WaveText.text = "Wave # " + (waveCount + 1);
             for (int x = 0; x < 5; x++) {
                 WaveText.enabled = false;
                 yield return new WaitForSeconds(0.3f);
-                WaveText.enabled = true;                
+                WaveText.enabled = true;
                 yield return new WaitForSeconds(0.3f);
             }
             WaveText.enabled = false;
             for (int i = 0; i < asteroids.Count; i++) {
                 Vector3 spawnPosition = new Vector3(Random.Range(-SpawnValues.x, SpawnValues.x), SpawnValues.y);
-                Quaternion spawnRotation = Quaternion.identity;
                 if (!asteroids[i].activeInHierarchy) {
                     asteroids[i].transform.position = spawnPosition;
-                    asteroids[i].transform.rotation = spawnRotation;
                     asteroids[i].SetActive(true);
                 }
                 yield return new WaitForSeconds(SpawnWait);
             }
-            waveCount += 1;            
+            waveCount += 1;
             yield return new WaitForSeconds(WaveWait);
 
             if (gameOver) {
@@ -92,7 +90,7 @@ public class GameController : MonoBehaviour {
                 break;
             }
 
-            if(waveCount >= WaveQuantity) {
+            if (waveCount >= WaveQuantity) {
                 boss.Movement();
                 WaveIsActive = false;
             }

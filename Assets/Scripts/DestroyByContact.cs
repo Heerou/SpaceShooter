@@ -8,6 +8,8 @@ public class DestroyByContact : MonoBehaviour {
     public int ScoreValue;
     GameController gameController;
 
+    public string TagToFind;
+
     private void Start() {
         GameObject gameControllerObj = GameObject.FindWithTag("GameController");
         if(gameControllerObj != null) {
@@ -19,11 +21,7 @@ public class DestroyByContact : MonoBehaviour {
 
     //Cuando se tocan explotan
     private void OnTriggerEnter(Collider other) {
-        if (other.tag == "Bullet") {
-            Instantiate(Explosion, other.transform.position, other.transform.rotation);
-            gameObject.SetActive(false);
-        }
-        if(other.tag == "Player") {
+        if(other.CompareTag(TagToFind)) {
             Instantiate(Explosion, other.transform.position, other.transform.rotation);
             gameController.GameOver();
             Destroy(other.gameObject);
