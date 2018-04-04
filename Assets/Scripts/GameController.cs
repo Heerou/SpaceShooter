@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour {
 
-    public GameObject Asteroids;
+    public GameObject[] Asteroids;
     public Vector2 SpawnValues;
     public int PooledAsteroids;
     public float SpawnWait;
@@ -38,8 +38,10 @@ public class GameController : MonoBehaviour {
 
         asteroids = new List<GameObject>();
         GameObject obj;
+        GameObject asteroidList;
         for (int i = 0; i < PooledAsteroids; i++) {
-            obj = (GameObject)Instantiate(Asteroids);
+            asteroidList = Asteroids[Random.Range(0, Asteroids.Length)];
+            obj = (GameObject)Instantiate(asteroidList);
             obj.name = "AstroideCool " + i;
             obj.SetActive(false);
             asteroids.Add(obj);
