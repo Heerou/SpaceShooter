@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BossMovement : MonoBehaviour {
+public class BossMovement : LifeComponent {
 
     public Boundary boundary;
     public float Speed;
     Rigidbody bossRB;
+
+    public string TagToFind;
+    public int Damage;
 
     // Use this for initialization
     void Start() {
@@ -40,5 +43,16 @@ public class BossMovement : MonoBehaviour {
             yield return null;
         }
         transitionObject.position = Vector3.Lerp(initialPos, finalPos, 1);        
+    }
+
+    private void OnTriggerEnter(Collider other) {
+        if (other.CompareTag(TagToFind)) {
+            other.GetComponent<LifeComponent>().TakeDamage(Damage);
+        }
+    }
+
+    public override void Muerte() {
+        base.Muerte();
+        gameObject.SetActive(false);
     }
 }

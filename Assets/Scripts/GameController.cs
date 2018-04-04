@@ -26,6 +26,8 @@ public class GameController : MonoBehaviour {
     List<GameObject> asteroids;
     public BossMovement boss;
 
+    GameObject FatherAsteroids;
+
     // Use this for initialization
     void Start() {
         restart = false;
@@ -36,6 +38,8 @@ public class GameController : MonoBehaviour {
         UpdateScore();
         StartCoroutine(SpawnAsteroids());
 
+        FatherAsteroids = new GameObject("Asteroids");
+
         asteroids = new List<GameObject>();
         GameObject obj;
         GameObject asteroidList;
@@ -45,6 +49,7 @@ public class GameController : MonoBehaviour {
             obj.name = "AstroideCool " + i;
             obj.SetActive(false);
             asteroids.Add(obj);
+            obj.transform.SetParent(FatherAsteroids.transform);
         }
         WaveText.text = "Wave # " + (waveCount + 1);
     }

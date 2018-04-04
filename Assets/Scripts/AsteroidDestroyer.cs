@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AsteroidDestroyer : MonoBehaviour {
+public class AsteroidDestroyer : LifeComponent {
 
     private void OnEnable() {
         Invoke("AwesomeAsteroidDestroyer", 2f);
@@ -15,5 +15,10 @@ public class AsteroidDestroyer : MonoBehaviour {
 
     void OnDisable() {
         CancelInvoke();
+    }
+
+    public override void Muerte() {
+        base.Muerte();
+        AwesomeAsteroidDestroyer();
     }
 }

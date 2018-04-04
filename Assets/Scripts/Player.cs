@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour {
+public class Player : LifeComponent {
 
     public float Speed;
     float moveHorizontal;
@@ -19,10 +19,17 @@ public class Player : MonoBehaviour {
     List<GameObject> bullets;
     int currentBullet;
 
+    GameObject FatherBullets;
+
+    GameController gameController;
+
     // Use this for initialization
     void Start() {
         playerRB = GetComponent<Rigidbody>();
         weaponAudio = GetComponent<AudioSource>();
+        gameController = FindObjectOfType<GameController>();
+
+        FatherBullets = new GameObject("PlayerBullets");
 
         bullets = new List<GameObject>();
         GameObject obj;
@@ -30,8 +37,8 @@ public class Player : MonoBehaviour {
             obj = (GameObject)Instantiate(Bullet);
             obj.SetActive(false);
             bullets.Add(obj);
-        }
-
+            obj.transform.SetParent(FatherBullets.transform);
+        }        
     }
 
     // Update is called once per frame
@@ -74,8 +81,14 @@ public class Player : MonoBehaviour {
             weaponAudio.Play();
         }
         currentBullet++;
-        if(currentBullet >= bullets.Count) {
+        if (currentBullet >= bullets.Count) {
             currentBullet = 0;
         }
+    }
+
+    public override void Muerte() {
+        base.Muerte();
+        gameController.GameOver();
+        gameObject.SetActive(false);
     }
 }
