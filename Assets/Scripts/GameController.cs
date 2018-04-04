@@ -6,9 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour {
 
-    public GameObject[] Asteroids;
     public Vector2 SpawnValues;
-    public int PooledAsteroids;
     public float SpawnWait;
     public float StartWait;
     public float WaveWait;
@@ -23,10 +21,13 @@ public class GameController : MonoBehaviour {
     bool restart;
     bool gameOver;
     int score;
-    List<GameObject> asteroids;
-    public BossMovement boss;
 
-    GameObject FatherAsteroids;
+    List<GameObject> asteroids;
+    public int PooledAsteroids;
+    public GameObject[] Asteroids;
+    GameObject AsteroidsFather;
+
+    public BossMovement boss;
 
     // Use this for initialization
     void Start() {
@@ -38,7 +39,7 @@ public class GameController : MonoBehaviour {
         UpdateScore();
         StartCoroutine(SpawnAsteroids());
 
-        FatherAsteroids = new GameObject("Asteroids");
+        AsteroidsFather = new GameObject("Asteroids");
 
         asteroids = new List<GameObject>();
         GameObject obj;
@@ -49,8 +50,8 @@ public class GameController : MonoBehaviour {
             obj.name = "AstroideCool " + i;
             obj.SetActive(false);
             asteroids.Add(obj);
-            obj.transform.SetParent(FatherAsteroids.transform);
-        }
+            obj.transform.SetParent(AsteroidsFather.transform);
+        }        
         WaveText.text = "Wave # " + (waveCount + 1);
     }
 

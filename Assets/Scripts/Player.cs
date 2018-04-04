@@ -9,19 +9,20 @@ public class Player : LifeComponent {
     float moveVertical;
     Rigidbody playerRB;
     public Boundary boundary;
+
     public GameObject Bullet;
     public Transform ShotSpawn;
     float fireRate = 0.5f;
     float nextFire = 0.5f;
     AudioSource weaponAudio;
-
     public int PooledBullets = 5;
     List<GameObject> bullets;
     int currentBullet;
-
     GameObject FatherBullets;
 
     GameController gameController;
+
+    public GameObject Explosion;
 
     // Use this for initialization
     void Start() {
@@ -38,7 +39,7 @@ public class Player : LifeComponent {
             obj.SetActive(false);
             bullets.Add(obj);
             obj.transform.SetParent(FatherBullets.transform);
-        }        
+        }
     }
 
     // Update is called once per frame
@@ -90,5 +91,7 @@ public class Player : LifeComponent {
         base.Muerte();
         gameController.GameOver();
         gameObject.SetActive(false);
+
+        Instantiate(Explosion);
     }
 }
