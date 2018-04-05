@@ -97,7 +97,7 @@ public class GameController : MonoBehaviour {
             }
 
             if (waveCount >= WaveQuantity) {
-                boss.Movement();
+                boss.ActivateBoss();
                 WaveIsActive = false;
             }
         }

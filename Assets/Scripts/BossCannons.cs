@@ -17,11 +17,14 @@ public class BossCannons : LifeComponent {
 
     GameObject FatherEnemyBullets;
 
+    BossMovement boss;
+
 
     // Use this for initialization
-    void Start () {
+    void Start() {
         weaponAudio = GetComponent<AudioSource>();
         FatherEnemyBullets = new GameObject("EnemyBullets");
+        boss = FindObjectOfType<BossMovement>();
 
         bullets = new List<GameObject>();
         GameObject obj;
@@ -32,13 +35,15 @@ public class BossCannons : LifeComponent {
             obj.transform.SetParent(FatherEnemyBullets.transform);
         }
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update() {
         Shooting();
     }
 
     void Shooting() {
+        if (boss.Down)
+            return;
         if (Time.time > nextFire) {
             nextFire = Time.time + fireRate;
             bullets[currentBullet].transform.position = ShotSpawn.position;
