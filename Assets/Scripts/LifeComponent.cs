@@ -5,6 +5,19 @@ using UnityEngine;
 public class LifeComponent : MonoBehaviour {
 
     public int Hp;
+    public int ScoreValue;
+    GameController gameController;
+    GameObject gameControllerObj;
+
+    private void Start() {
+        gameControllerObj = GameObject.FindGameObjectWithTag("GameController");
+
+        if (gameControllerObj != null) {
+            gameController = gameControllerObj.GetComponent<GameController>();
+        } else {
+            Debug.Log("No hay GameController");
+        }
+    }
 
     public virtual void TakeDamage(int damage) {
         Hp -= damage;
@@ -16,6 +29,6 @@ public class LifeComponent : MonoBehaviour {
     }
 
     public virtual void Muerte() {
-
+        gameController.AddScore(ScoreValue);
     }
 }

@@ -14,11 +14,15 @@ public class Bullet : MonoBehaviour {
 
     public ParticleSystem Explosion;
 
+    AudioSource ExplosionAudio;
+
     void Start() {
         bulletRB = GetComponent<Rigidbody>();
         bulletRB.velocity = transform.forward * Speed;
 
         Explosion = (ParticleSystem)Instantiate(Explosion);
+
+        ExplosionAudio = GetComponent<AudioSource>();
     }
 
     private void OnTriggerEnter(Collider other) {
@@ -31,6 +35,7 @@ public class Bullet : MonoBehaviour {
         if (AmIAsteroid) {
             SetState(false);
             Explosion.transform.position = transform.position;
+            ExplosionAudio.Play();
             Explosion.Play();
         }
     }
